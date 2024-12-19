@@ -37,8 +37,8 @@ Dog(Adm): Hey Guys!<br>
 
 ### 5. Add time and date of sent messages on the other side of the messages
 ```md
-Dog: Hey Guys!											12:46 AM | 20.12.24<br>
-                                                        ^GREYED
+Dog: Hey Guys!									12:46 AM | 20.12.24
+                                                    			^GREYED
 ```
 ### Configure the whole thing into a CLI inspired from [whatscli](https://github.com/normen/whatscli)
 
