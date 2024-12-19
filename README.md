@@ -1,4 +1,4 @@
-# ChatUp ⚡ : A Terminal based Python Chat Room Built over TCP --- v1
+# ChatUp ⚡ : A Terminal based Chat Room Application
 <img align = "center" src = "assets/working.png">
 
 ## ToDo
