@@ -1,15 +1,17 @@
-# Terminal based Python Chat Room Built over TCP --- v1
+# ChatUp ⚡ : A Terminal based Python Chat Room Built over TCP --- v1
 <img align = "center" src = "assets/working.png">
 
 ## ToDo
 ### 1. Add Colors to username inside the chat room using [Colorama](https://github.com/tartley/colorama):
 ```md
-Dog: Hey Guys!<br>
-^         ^<br>
+Dog: Hey Guys!
+^         ^
 GREEN    WHITE
-```
 
-Error messages should be RED and LIGHT_RED
+(the username color can vary but should remain consisten throughout the chat)
+```
+* Error messages should be RED and LIGHT_RED
+* Some commands like `Nick Joined the chat` can be YELLOW
 
 ### 2. Create simple Login Signup page for clients:
 store the data permanently (maybe some sql?) for their future signons.
@@ -23,7 +25,7 @@ For Server(explicitly):
 
 Admins should also have a (Adm) tag after their names so as to let others know.<br>
 ```md
-Dog(Adm): Hey Guys!<br>
+Dog(Adm): Hey Guys!
 ^RED ^YELLOW???  ^WHITE
 ```
 
