@@ -39,12 +39,15 @@ Dog(Adm): Hey Guys!
 
 * SERVER WILL ALSO HAVE THE ADMIN PRIVILEGES
 
-### 5. Add time and date of sent messages on the other side of the messages
+### 5. Add time and date of sent messages on the other side of the messages:
 ```md
 Dog: Hey Guys!									12:46 AM | 20.12.24
                                                     					^GREYED
 ```
-### Configure the whole thing into a CLI inspired from [whatscli](https://github.com/normen/whatscli)
+
+### 6. Convert server.py and client.py into a .exe file and update README after.
+
+### 7. Configure the whole thing into a CLI inspired from [whatscli](https://github.com/normen/whatscli) :
 * Potential to include contactbook and so as to begin one-to-one communication instead of exisiting communicaitons
 * Host on a droplet on digitalocean finally ?!
 * Finally share and ask for further suggestions on reddit!
