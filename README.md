@@ -1,4 +1,4 @@
-# ChatUp ⚡ : A Terminal based Chat Room Application
+# ⚡ChatUp⚡ : A Terminal based Chat Room Application
 <img align = "center" src = "assets/working.png">
 
 ## ToDo
@@ -12,6 +12,8 @@ GREEN    WHITE
 ```
 * Error messages should be RED and LIGHT_RED
 * Some commands like `Nick Joined the chat` can be YELLOW
+* Try to indent my sent messages towards right while the messages recieved <br>
+  would be at left side. (LIKE IN WHATSAPP)
 
 ### 2. Create simple Login Signup page for clients:
 store the data permanently (maybe some sql?) for their future signons.
@@ -53,3 +55,9 @@ Dog: Hey Guys!									12:46 AM | 20.12.24
 * Finally share and ask for further suggestions on reddit!
 
 <!--EOF-->
+
+
+
+what the fuck is going on in the right terminal
+cyan color should be for every messsage user sends only for his terminal windows
+(currently for his nickname entry ?)

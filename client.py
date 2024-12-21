@@ -1,15 +1,14 @@
 import os
 import socket
 import threading
-
+from colorama import Fore, Back, Style
 os.system('cls')
 
 # Global Variables
-
 terminal_width = os.get_terminal_size().columns
 
-host = '192.168.1.4'
-port = 55555
+host = '192.168.1.2'
+port = 9999
 client_socket = None
 nickname = ""
 
@@ -19,8 +18,7 @@ def client_setup():
 		global client_socket
 		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	except socket.error as msg:
-		print("Client side Socket Creation Error: " + str(msg) + "\nRetrying...")
-		client_setup()
+		print(Fore.RED + "Client side Socket Creation Error: " + Fore.LIGHTRED_EX + str(msg) + Fore.RED + "\nPLEASE RESTART YOUR CLIENT." + Style.RESET_ALL)
 
 # Connect to the Server
 def connect_to_server():
@@ -34,26 +32,36 @@ def connect_to_server():
 # Nickname
 def nickname():
 	global nickname
-	nickname = input("Enter a Nickname: ")
+	try:
+		nickname = input("Enter a Nickname: ")
+		if len(nickname.strip()) == 0:
+			print("Please Enter a Valid Nickname!")
+			nickname()
+	except:
+		print("CHATUP CLIENT ERROR CODE 001: Nickname Error!")
+		nickname()
+
 
 # Receive Messages from the Server
 def receive_messages():
 	while True:
 		try:
-			message = client_socket.recv(1024).decode('ascii')
-			print(message)
+			sent_by_user = client_socket.recv(1024).decode('ascii')
+			message = client_socket.recv(20480).decode('ascii')
+			print(Fore.GREEN + sent_by_user +': '+ Fore.WHITE + message + Style.RESET_ALL)
 		except:
-			print("An Error Occurred!")
+			print("CHAT UP CLIENT ERROR CODE 002: Message Receiving Error!")
 			client_socket.close()
 			break
 
 # Send Messages to the Server
 def send_messages():
 	while True:
-		msg = input()
-		if len(msg.strip()) == 0:
+		print(Fore.CYAN)
+		message = input()
+		print(Style.RESET_ALL)
+		if len(message.strip()) == 0:
 			continue
-		message = f"{nickname}: {msg}"
 		client_socket.send(message.encode('ascii'))
 
 # Running Threads
