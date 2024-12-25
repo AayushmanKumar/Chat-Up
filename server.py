@@ -7,7 +7,7 @@ from colorama import Fore, Back, Style
 os.system('cls')
 
 # Global Variables
-host = '192.168.1.2'
+host = '192.168.1.6'
 port = 9999
 server_socket = None
 
@@ -38,41 +38,41 @@ def accept_connections():
 	while True:
 		client_socket, client_address = server_socket.accept()
 		nickname = client_socket.recv(1024).decode('ascii')
-		nicknames.append(str(nickname + " @ " + str(client_address[0])))
+		nickname = nickname + " @ " + str(client_address[0])
+		client_socket.send(nickname.encode('ascii'))
+		nicknames.append(nickname)
 		client_sockets.append(client_socket)
 		client_addresses.append(client_address)
-		broadcast_name(nickname)
-		broadcast_message("joined the chat!")
 
 		thread = threading.Thread(target=handle_client, args=(client_socket,))
 		thread.start()
 
 # Handle Messages from Clients
 def handle_client(client_socket):
+	broadcast("@" + nicknames[client_sockets.index(client_socket)] + " joined the chat!")
+	print(Fore.YELLOW + nicknames[client_sockets.index(client_socket)] + " joined the chat!" + Style.RESET_ALL)
 	while True:
 		try:
 			
 			message = client_socket.recv(20480).decode('ascii')
-			broadcast_name(nicknames[client_sockets.index(client_socket)])
-			broadcast_message(message)
-		except:
+			broadcast(nicknames[client_sockets.index(client_socket)] + ": " + message)
+			print(Fore.GREEN + nicknames[client_sockets.index(client_socket)] + Style.RESET_ALL + ": " + message)
+		except KeyboardInterrupt:
+			print("Server Shutting Down...")
+			broadcast("@Server is Shutting Down...")
+			server_socket.close()
+			break
+		except :
 			index = client_sockets.index(client_socket) # Remove the Client if disconnected
 			nickname = nicknames[index]
-			broadcast_name(nickname)
-			broadcast_message("left the chat!")
+			broadcast(f"@{nickname} left the chat!")
 			nicknames.remove(nickname)
 			client_sockets.remove(client_socket)
 			client_socket.close()
 			client_addresses.remove(client_addresses[index])
 			break
 
-def broadcast_name(nickname):
-	print(Fore.GREEN + nickname + ": " + Style.RESET_ALL,end ="") # for server records
-	for client_socket in client_sockets:
-		client_socket.send(nickname.encode('ascii')) # for
-
-def broadcast_message(message):
-	print(message) # for server records
+def broadcast(message):
 	for client_socket in client_sockets:
 		client_socket.send(message.encode('ascii')) # for the clients
 

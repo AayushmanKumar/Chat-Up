@@ -1,4 +1,5 @@
 import os
+import sys
 import socket
 import threading
 from colorama import Fore, Back, Style
@@ -7,7 +8,7 @@ os.system('cls')
 # Global Variables
 terminal_width = os.get_terminal_size().columns
 
-host = '192.168.1.2'
+host = '192.168.1.6'
 port = 9999
 client_socket = None
 nickname = ""
@@ -23,32 +24,40 @@ def client_setup():
 # Connect to the Server
 def connect_to_server():
 	try:
+		global nickname
+		nickname = nickname_func()
 		client_socket.connect((host, port))
 		client_socket.send(nickname.encode('ascii'))
+		nickname = client_socket.recv(1024).decode('ascii')
 	except socket.error as msg:
-		print("Connection Error: " + str(msg) + "\nRetrying...")
-		connect_to_server()
+		print("Connection Error: " + str(msg) + "\nRestart the Client and Try Again!")
 
-# Nickname
-def nickname():
-	global nickname
-	try:
-		nickname = input("Enter a Nickname: ")
-		if len(nickname.strip()) == 0:
-			print("Please Enter a Valid Nickname!")
-			nickname()
-	except:
-		print("CHATUP CLIENT ERROR CODE 001: Nickname Error!")
-		nickname()
+# Take Nickname input
 
+def nickname_func():
+	print(Fore.GREEN + "Enter Your Alphanumeric Nickname: " + Style.RESET_ALL, end="")
+	nickname = input()
+	nickname.strip()
+	if len(nickname) == 0 or len(nickname)>15 or nickname.isalnum() == False:
+		print(Fore.RED + "Invalid Nickname" + Style.RESET_ALL)
+		nickname_func()
+	return nickname
 
 # Receive Messages from the Server
 def receive_messages():
 	while True:
 		try:
-			sent_by_user = client_socket.recv(1024).decode('ascii')
 			message = client_socket.recv(20480).decode('ascii')
-			print(Fore.GREEN + sent_by_user +': '+ Fore.WHITE + message + Style.RESET_ALL)
+			if(message[0] != '@'):
+				nn,msg = message.split(":",1)
+				print(Fore.GREEN + nn + Fore.WHITE + ":" + msg + Style.RESET_ALL)
+			else :
+				print(Fore.YELLOW + message[1:] + Style.RESET_ALL)
+
+		except KeyboardInterrupt:
+			client_socket.close()
+			sys.exit()	
+
 		except:
 			print("CHAT UP CLIENT ERROR CODE 002: Message Receiving Error!")
 			client_socket.close()
@@ -56,13 +65,20 @@ def receive_messages():
 
 # Send Messages to the Server
 def send_messages():
-	while True:
-		print(Fore.CYAN)
-		message = input()
-		print(Style.RESET_ALL)
-		if len(message.strip()) == 0:
-			continue
-		client_socket.send(message.encode('ascii'))
+	try:
+		while True:
+			message = input()
+			# sys.stdout.write("\033[F")  # Move cursor to the previous line
+			# sys.stdout.write("\033[K")  # Clear the line
+			# sys.stdout.flush()
+			# print(Style.RESET_ALL)
+			if len(message.strip()) == 0:
+				continue
+			client_socket.send(message.encode('ascii'))
+	except KeyboardInterrupt:
+			client_socket.close()
+			sys.exit()	
+
 
 # Running Threads
 def run_threads():
@@ -74,7 +90,6 @@ def run_threads():
 
 # Main function
 def main():
-	nickname()
 	client_setup()
 	connect_to_server()
 	run_threads()
